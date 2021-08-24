@@ -1,0 +1,17 @@
+Shapely==1.7.1
+scipy==1.7.0
+matplotlib==3.4.2
+numpy==1.19.5
+tqdm==4.51.0
+pyproj==3.0.0.post1
+ipywidgets==7.6.2
+GDAL==3.2.2
+requests==2.24.0
+pandas==1.2.4
+datacube==1.8.5
+fiona==1.8.20
+hdstats==0.2.1
+osgeo==0.0.1
+psutil==5.8.0
+python_dateutil==2.8.2
+rasterio==1.2.6
