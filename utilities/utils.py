@@ -19,7 +19,6 @@ from datetime import datetime, date, timedelta
 from dateutil.relativedelta import relativedelta
 
 
-
 def get_ip_address(def_apache_port='45200'):
     ''' Get the local IP address of the current machine'''
 

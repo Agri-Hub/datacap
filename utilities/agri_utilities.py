@@ -39,7 +39,6 @@ import hashlib
 import re
 import socket
 from dateutil.relativedelta import relativedelta
-
 from utilities.utils import *
 
 
@@ -779,18 +778,21 @@ def preprocess_s2(ws_tmp,clip=False,bbox=[]):
             logging.info('Removing process of intermediate files (8bit rasters) has been successfully finished')
 
 
+def _get_next_page(links):
+    for link in links:
+        if link['rel'] == 'next':
+            return link['href']
+    return False
+
 def download_s2(tiles,start_date,end_date,outdir,username,password,cloud_cover='90'):
+
+    import requests
     cloud_cover = str(cloud_cover)
+
     for tile_name in tiles:
         query_url = 'https://finder.creodias.eu/resto/api/collections/Sentinel2/search.json?maxRecords=10&rocessingLevel=LEVEL2A&productIdentifier=%25'+tile_name+'%25&startDate='+start_date+'T00%3A00%3A00Z&completionDate='+end_date+'T23%3A59%3A59Z&sortParam=startDate&sortOrder=descending&status=0%7C34%7C37&dataset=ESA-DATASET&cloudCover=%5B0%2C'+cloud_cover+'%5D&'
 
         initial_outdir = outdir
-
-        def _get_next_page(links):
-            for link in links:
-                if link['rel'] == 'next':
-                    return link['href']
-            return False
 
         query_response = {}
         while query_url:
@@ -806,7 +808,6 @@ def download_s2(tiles,start_date,end_date,outdir,username,password,cloud_cover='
         import concurrent.futures
         from multiprocessing.pool import ThreadPool
 
-        import requests
         # from tqdm import tqdm
 
         DOWNLOAD_URL = 'https://zipper.creodias.eu/download'
