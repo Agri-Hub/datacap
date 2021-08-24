@@ -672,11 +672,8 @@ def cloud_trend(geom,start_time='2019-01-01', end_time='2019-12-31'):
     return cloud_data
 
 
-def preprocess_s2():
-    # from shapely import geometry as shapely_geometry
 
-
-def basic_preprocess(ws_tmp,clip=False,bbox=[]):
+def preprocess_s2(ws_tmp,clip=False,bbox=[]):
 
     months = {'01': 'January_all', '02': 'February_all', '03': 'March_all', '04': 'April_all', '05': 'May_all',
               '06': 'June_all', '07': 'July_all', '08': 'August_all', '09': 'September_all', '10': 'October_all',
@@ -779,3 +776,100 @@ def basic_preprocess(ws_tmp,clip=False,bbox=[]):
             for tif_8bit in glob(os.path.join(mon_path2, '*8bit.tif')):
                     os.remove(tif_8bit)
             logging.info('Removing process of intermediate files (8bit rasters) has been successfully finished')
+
+
+def download_s2(tiles,start_date,end_date,outdir,username,password,cloud_cover='90'):
+    cloud_cover = str(cloud_cover)
+    for tile_name in tiles:
+        query_url = 'https://finder.creodias.eu/resto/api/collections/Sentinel2/search.json?maxRecords=10&rocessingLevel=LEVEL2A&productIdentifier=%25'+tile_name+'%25&startDate='+start_date+'T00%3A00%3A00Z&completionDate='+end_date+'T23%3A59%3A59Z&sortParam=startDate&sortOrder=descending&status=0%7C34%7C37&dataset=ESA-DATASET&cloudCover=%5B0%2C'+cloud_cover+'%5D&'
+
+        initial_outdir = outdir
+
+        def _get_next_page(links):
+            for link in links:
+                if link['rel'] == 'next':
+                    return link['href']
+            return False
+
+        query_response = {}
+        while query_url:
+            response = requests.get(query_url)
+            response.raise_for_status()
+            data = response.json()
+            for feature in data['features']:
+                query_response[feature['id']] = feature
+            query_url = _get_next_page(data['properties']['links'])
+
+        import shutil
+        from pathlib import Path
+        import concurrent.futures
+        from multiprocessing.pool import ThreadPool
+
+        import requests
+        # from tqdm import tqdm
+
+        DOWNLOAD_URL = 'https://zipper.creodias.eu/download'
+        TOKEN_URL = 'https://auth.creodias.eu/auth/realms/DIAS/protocol/openid-connect/token'
+
+        def _get_token(username, password):
+            token_data = {
+                'client_id': 'CLOUDFERRO_PUBLIC',
+                'username': username,
+                'password': password,
+                'grant_type': 'password'
+            }
+            response = requests.post(TOKEN_URL, data=token_data).json()
+            try:
+                return response['access_token']
+            except KeyError:
+                raise RuntimeError('Unable to get token. Response was {response}')
+
+
+
+        ids = [result['id'] for result in query_response.values()]
+
+        i = 0
+        for id in ids:
+            i+=1
+            time.sleep(0.1)
+            outdir = initial_outdir
+            identifier = query_response[id]['properties']['productIdentifier'].split('/')[-1]
+            if 'MSIL1C' in identifier:
+                continue
+            sensing_date = identifier.split('.')[0].split('_')[2]
+            sensing_day = sensing_date[-2:]
+            sensing_year = sensing_date[:4]
+            sensing_month = sensing_date[4:6]
+            size = query_response[id]['properties']['services']['download']['size']/1024.0/1024.0
+            token = _get_token(username, password)
+            url = '{}/{}?token={}'.format(DOWNLOAD_URL,id,token)
+            outdir = outdir + '/'+sensing_year
+            if not os.path.exists(outdir):
+                os.mkdir(outdir)
+            outdir = outdir + '/' + tile_name
+            if not os.path.exists(outdir):
+                os.mkdir(outdir)
+            outdir = outdir +'/'+sensing_month
+            if not os.path.exists(outdir):
+                os.mkdir(outdir)
+            print(outdir)
+            outfile = Path(outdir) / '{}.zip'.format(identifier)
+            if os.path.exists(outfile):
+                continue
+            outfile_temp = str(outfile) + '.incomplete'
+            try:
+                downloaded_bytes = 0
+                print(url)
+                req =  requests.get(url, stream=True, timeout=100)
+                chunk_size = 2 ** 20  # download in 1 MB chunks
+                with open(outfile_temp, 'wb') as fout:
+                    for chunk in req.iter_content(chunk_size=chunk_size):
+                        if chunk:  # filter out keep-alive new chunks
+                            fout.write(chunk)
+                            downloaded_bytes += len(chunk)
+                shutil.move(outfile_temp, str(outfile))
+            finally:
+                try:
+                    Path(outfile_temp).unlink()
+                except OSError:
+                    pass
