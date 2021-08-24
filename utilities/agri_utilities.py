@@ -24,7 +24,6 @@ from hdstats import nangeomedian_pcm
 from tqdm import tqdm
 import pandas as pd
 import gdal
-from utils import *
 import fnmatch
 import csv
 import json
@@ -40,6 +39,8 @@ import hashlib
 import re
 import socket
 from dateutil.relativedelta import relativedelta
+
+from utilities.utils import *
 
 
 def show_options():
