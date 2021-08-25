@@ -28,7 +28,7 @@ def get_ip_address(def_apache_port='45200'):
 
 
 class MyLogger(object):
-    logging.basicConfig(format='%(asctime)s %(levelname)s \t %(message)s', level=logging.DEBUG)
+    logging.basicConfig(format='%(asctime)s %(levelname)s \t %(message)s', level=logging.INFO)
     logger = logging.getLogger(__name__)
 
 

@@ -1,0 +1,27 @@
+name: sentinel1
+description: Sentinel-1 SAR Gamma0 scene
+metadata_type: eo
+
+storage:
+    crs: EPSG:3857
+    resolution:
+        x: 10.0
+        y: -10.0
+
+metadata:
+  format: {name: GeoTIF}
+  instrument: {name: SAR_C}
+  platform: {code: SENTINEL_1}
+  product_type: gamma0
+
+measurements:
+- name: vh
+  units: '1'
+  dtype: float32
+  nodata: 0
+
+- name: vv
+  units: '1'
+  dtype: float32
+  nodata: 0
+

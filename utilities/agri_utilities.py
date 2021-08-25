@@ -679,13 +679,14 @@ def preprocess_s2(ws_tmp,clip=False,bbox=[]):
               '06': 'June_all', '07': 'July_all', '08': 'August_all', '09': 'September_all', '10': 'October_all',
               '11': 'November_all', '12': 'December_all'}
 
-
     bands = ['B02_10m.tif', 'B03_10m.tif', 'B04_10m.tif', 'B05_10m.tif', 'B06_10m.tif', 'B07_10m.tif', 'B08_10m.tif',
              'B8A_10m.tif', 'B11_10m.tif', 'B12_10m.tif', 'SCL_10m.tif','TCI_10m.tif']
 
-
-    # if clip = True please get the bounds (3857 projection)
-    xmin,ymin,xmax,ymax = bbox[0],bbox[1],bbox[2],bbox[3]
+    if len(bbox == 4)
+        xmin,ymin,xmax,ymax = bbox[0],bbox[1],bbox[2],bbox[3]
+        clip = True
+    else:
+        clip = False
 
     logging.info('Starting the preprocess of Sentinel-2 products...')
     for mon in os.listdir(ws_tmp):
