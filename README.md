@@ -26,7 +26,7 @@ Afterwards, datacube has to be installed and configured. The full installation g
 
 
 ## Acknowledgements
-
+Supported by the ENVISION (No. 869366) and the CALLISTO (No. 101004152) projects, which have been funded by EU Horizon 2020 programs.
 
 ## Usage/Examples
 
