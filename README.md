@@ -1,7 +1,7 @@
 
 # DataCAP
 
-##### !! This is a work in progress. It should not be consindered as a stable version yet !!
+## !! This is a work in progress. It should not be consindered as a stable version yet !!
 
 [![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/) [![Generic badge](https://img.shields.io/badge/OpenDataCube-<COLOR>.svg)](https://shields.io/) [![Linux](https://svgshare.com/i/Zhy.svg)](https://svgshare.com/i/Zhy.svg)
 
