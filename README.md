@@ -38,6 +38,10 @@ Please check the notebooks
 ## Citation
 If you find this work useful in your research, please cite:
 
+Sitokonstantinou, Vasileios, Koukos, Alkiviadis, Drivas, Thanassis, Kontoes, Charalampos, & Karathanassi, Vassilia. (2022, January 13). DataCAP: A Satellite Datacube and Crowdsourced Street-level Images for the Monitoring of the Common Agricultural Policy. 28th International Conference on Multimedia Modeling (MMM 2022), Phu Quoc, Vietnam. https://doi.org/10.5281/zenodo.5845512
+
+and in BiBTex format: 
+
 @proceedings{sitokonstantinou_vasileios_2022_5845512,
   title        = {{DataCAP: A Satellite Datacube and Crowdsourced 
                    Street-level Images for the Monitoring of the
