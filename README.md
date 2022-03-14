@@ -56,7 +56,7 @@ and in BiBTex format:
 }
  -->
  
- @InProceedings{10.1007/978-3-030-98355-0_41,
+@InProceedings{10.1007/978-3-030-98355-0_41,
 author="Sitokonstantinou, Vasileios
 and Koukos, Alkiviadis
 and Drivas, Thanassis
