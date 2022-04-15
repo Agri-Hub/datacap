@@ -39,7 +39,7 @@ Please check the notebooks
 If you find this work useful in your research, please cite:
 
 
-```
+```bibtex
 @inproceedings{sitokonstantinou2022datacap,
   title={DataCAP: A Satellite Datacube and Crowdsourced Street-Level Images for the Monitoring of the Common Agricultural Policy},
   author={Sitokonstantinou, Vasileios and Koukos, Alkiviadis and Drivas, Thanassis and Kontoes, Charalampos and Karathanassi, Vassilia},
@@ -49,3 +49,4 @@ If you find this work useful in your research, please cite:
   organization={Springer}
 }
 ```
+
